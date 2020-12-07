@@ -1,0 +1,88 @@
+﻿@model Usuario
+
+<form asp-action="Cadastrar" asp-controller="Usuario" method="post">
+    
+            <fieldset>
+                <div class="form-group">
+                    <label asp-for="Cnpj" class="control-label"></label>
+                    <input asp-for="Cnpj" id="cnpj" class="form-control" />
+                </div>
+                <button type="button" onclick="BuscarCNPJ()" class="btn btn-primary">Buscar Estabelecimento</button>
+                <div class="form-group">
+                    <label asp-for="Tipo" class="control-label"></label>
+                    <input asp-for="Tipo" readonly id="tipo" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Fantasia" class="control-label"></label>
+                    <input asp-for="Fantasia" readonly id="fantasia" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Capital_social" class="control-label"></label>
+                    <input asp-for="Capital_social" readonly id="capital_social" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Situacao" class="control-label"></label>
+                    <input asp-for="Situacao" readonly id="situacao" class="form-control" />
+                </div>
+
+            </fieldset>
+            <fieldset>
+                <legend>Cadastrar Usuario</legend>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Nome">Nome:</label>
+                    <input class="form-control" asp-for="Nome" type="text" placeholder="Nome do Usuario" />
+                    <span class="text-danger" asp-validation-for="Nome"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Cpf">Cpf:</label>
+                    <input class="form-control" asp-for="Cpf" type="text" placeholder="CPF do Usuario" />
+                    <span class="text-danger" asp-validation-for="Cpf"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email">Email:</label>
+                    <input class="form-control" asp-for="Email" type="text" placeholder="Email do Usuario" />
+                    <span class="text-danger" asp-validation-for="Email"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Senha">Senha:</label>
+                    <input class="form-control" asp-for="Senha" type="password" placeholder="Senha" />
+                    <span class="text-danger" asp-validation-for="Senha"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmacaoSenha">Confirmação da Senha:</label>
+                    <input class="form-control" asp-for="ConfirmacaoSenha" type="password" placeholder="Senha" />
+                    <span class="text-danger" asp-validation-for="ConfirmacaoSenha"></span>
+                </div>
+
+                <input class="btn btn-info" type="submit" value="Cadastrar" />
+            </fieldset>
+</form>
+
+<script>
+    var txtCnpj = document.getElementById("cnpj");
+    var txtTipo = document.getElementById("tipo");
+    var txtFantasia = document.getElementById("fantasia");
+    var txtCapital_social = document.getElementById("capital_social");
+    var txtSituacao = document.getElementById("situacao");
+
+    function BuscarCNPJ() {
+        var url = `https://www.receitaws.com.br/v1/cnpj/${txtCnpj.value}`;
+
+        fetch(url, { method: "GET" })
+            .then(response => response.json())
+            .then(json => {
+                txtTipo.value = json.tipo;
+                txtFantasia.value = json.fantasia;
+                txtCapital_social.value = json.capital_social;
+                txtSituacao.value = json.situacao;
+            })
+            .catch(error => console.log(error));
+    }
+
+</script>

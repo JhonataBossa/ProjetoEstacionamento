@@ -1,0 +1,25 @@
+﻿﻿.conteudo {
+    padding: 32px;
+}
+
+.espacamento-baixo {
+    margin-bottom: 24px;
+}
+
+.rodape {
+    text-align: center;
+}
+
+.div-conteudo {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.div-categoria {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.link-categoria {
+    margin-right: 8px;
+}
