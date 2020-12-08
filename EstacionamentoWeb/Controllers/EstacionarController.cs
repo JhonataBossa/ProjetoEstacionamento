@@ -41,12 +41,17 @@ namespace EstacionamentoWeb.Controllers
         // GET: Estacionar/Create
         public IActionResult Create()
         {
-            var name = User.Identity.Name;
-            Usuario usuario = _usuarioDAO.BuscarPorEmail(name);
-            int usuarioId = usuario.Id;
-            ViewBag.Veiculos = new SelectList(_veiculoDAO.ListarPorUsuario(usuarioId), "Id", "Modelo");
-            ViewBag.Estacionamentos = new SelectList(_estacionamentoDAO.ListarPorUsuario(usuarioId), "Id", "Nome");
-            return View();
+            var email = User.Identity.Name;
+            if (email != null)
+            {
+                var name = User.Identity.Name;
+                Usuario usuario = _usuarioDAO.BuscarPorEmail(name);
+                int usuarioId = usuario.Id;
+                ViewBag.Veiculos = new SelectList(_veiculoDAO.ListarPorUsuario(usuarioId), "Id", "Modelo");
+                ViewBag.Estacionamentos = new SelectList(_estacionamentoDAO.ListarPorUsuario(usuarioId), "Id", "Nome");
+                return View();
+            }
+            return RedirectToAction("Login", "Usuario");
         }
         [HttpPost]
         public IActionResult Create(Estacionar estacionar)
@@ -62,5 +67,31 @@ namespace EstacionamentoWeb.Controllers
             }
             return View(estacionar);
         }
+
+        public IActionResult Retirar(int id) 
+        {
+            var email = User.Identity.Name;
+            if (email != null)
+            {
+                Estacionar estacionado = _estacionarDAO.BuscarPorId(id); 
+                int entrada = estacionado.CriadoEm.Hour; 
+                int saida = DateTime.Now.Hour; 
+                int tempo = saida - entrada; 
+                int est = estacionado.EstacionamentoId; 
+                Estacionamento estacionamento = _estacionamentoDAO.BuscarPorId(est); 
+                double valor = estacionamento.Preco; 
+                if (tempo <= 1) { 
+                    ViewBag.Preco = valor; return View(); 
+                } else if (tempo > 1 && tempo <= 5) 
+                { 
+                    ViewBag.Preco = valor * 2; return View(); 
+                } else if (tempo > 5) 
+                { 
+                    ViewBag.Preco = valor * 4; 
+                } ViewBag.PrecoPadrao = valor; return View();
+            }
+            return RedirectToAction("Login", "Usuario");
+        }
+
     }
 }

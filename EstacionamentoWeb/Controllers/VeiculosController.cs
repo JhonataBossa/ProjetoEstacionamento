@@ -31,7 +31,12 @@ namespace EstacionamentoWeb.Controllers
         }
         public IActionResult Cadastrar()
         {
-            return View();
+            var email = User.Identity.Name;
+            if (email != null)
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "Usuario");
         }
         [HttpPost]
         public IActionResult Cadastrar(Veiculo veiculo)
@@ -50,7 +55,12 @@ namespace EstacionamentoWeb.Controllers
         }
         public IActionResult Alterar(int id)
         {
-            return View(_veiculoDAO.BuscarPorId(id));
+            var email = User.Identity.Name;
+            if (email != null)
+            {
+                return View(_veiculoDAO.BuscarPorId(id));
+            }
+            return RedirectToAction("Login", "Usuario");
         }
         [HttpPost]
         public IActionResult Alterar(Veiculo veiculo)
@@ -62,8 +72,13 @@ namespace EstacionamentoWeb.Controllers
         // GET: Veiculos/Delete/5
         public IActionResult Remover(int id)
         {
-            _veiculoDAO.Remover(id);
+            var email = User.Identity.Name;
+            if (email != null)
+            {
+                _veiculoDAO.Remover(id);
             return RedirectToAction("Index", "Veiculos");
+            }
+            return RedirectToAction("Login", "Usuario");
         }
     }
 }

@@ -36,8 +36,13 @@ namespace EstacionamentoWeb.Controllers
         }
         public IActionResult Index()
         {
-            ViewBag.Title = "Gerenciamento de Usuarios";
+            var email = User.Identity.Name;
+            if (email != null)
+            {
+                ViewBag.Title = "Gerenciamento de Usuarios";
             return View(_usuarioDAO.Listar());
+            }
+            return RedirectToAction("Login", "Usuario");
         }
         public IActionResult Cadastrar()
         {
@@ -98,12 +103,22 @@ namespace EstacionamentoWeb.Controllers
 
         public IActionResult Remover(int id)
         {
-            _usuarioDAO.Remover(id);
-            return RedirectToAction("Index", "Usuario");
-        }
+            var email = User.Identity.Name;
+            if (email != null)
+            {
+                _usuarioDAO.Remover(id);
+                return RedirectToAction("Index", "Usuario");
+            }
+            return RedirectToAction("Login", "Usuario");
+    }
         public IActionResult Alterar(int id)
         {
-            return View(_usuarioDAO.BuscarPorId(id));
+            var email = User.Identity.Name;
+            if (email != null)
+            {
+                return View(_usuarioDAO.BuscarPorId(id));
+            }
+            return RedirectToAction("Login", "Usuario");
         }
         [HttpPost]
         public IActionResult Alterar(Usuario usuario)

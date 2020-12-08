@@ -27,12 +27,22 @@ namespace EstacionamentoWeb.Controllers
         }
         public IActionResult Index()
         {
+            var email = User.Identity.Name;
+            if (email != null) 
+            {             
             ViewBag.Title = "Cadastro de Estacionamento";
             return View(_estacionamentoDAO.Listar());
+            }
+            return RedirectToAction("Login", "Usuario");
         }
         public IActionResult Cadastrar()
         {
-            return View();
+            var email = User.Identity.Name;
+            if (email != null)
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "Usuario");
         }
         [HttpPost]
         public IActionResult Cadastrar(Estacionamento estacionamento)
@@ -52,13 +62,24 @@ namespace EstacionamentoWeb.Controllers
 
         public IActionResult Alterar(Estacionamento estacionamento)
         {
-            _estacionamentoDAO.Alterar(estacionamento);
+            var email = User.Identity.Name;
+            if (email != null)
+            {
+                _estacionamentoDAO.Alterar(estacionamento);
             return RedirectToAction("Index", "Estacionamento");
-        }
+            }
+            return RedirectToAction("Login", "Usuario");
+    }
         public IActionResult Remover(int id)
         {
-            _estacionamentoDAO.Remover(id);
+            var email = User.Identity.Name;
+            if (email != null)
+            {
+                _estacionamentoDAO.Remover(id);
             return RedirectToAction("Index", "Estacionamento");
+            }
+            return RedirectToAction("Login", "Usuario");
         }
+
     }
 }

@@ -7,7 +7,9 @@
                     <label asp-for="Cnpj" class="control-label"></label>
                     <input asp-for="Cnpj" id="cnpj" class="form-control" />
                 </div>
+
                 <button type="button" onclick="BuscarCNPJ()" class="btn btn-primary">Buscar Estabelecimento</button>
+                
                 <div class="form-group">
                     <label asp-for="Tipo" class="control-label"></label>
                     <input asp-for="Tipo" readonly id="tipo" class="form-control" />
@@ -72,9 +74,13 @@
     var txtSituacao = document.getElementById("situacao");
 
     function BuscarCNPJ() {
-        var url = `https://www.receitaws.com.br/v1/cnpj/${txtCnpj.value}`;
+        var protectedUrl = `https://www.receitaws.com.br/v1/cnpj/${txtCnpj.value}`;
 
-        fetch(url, { method: "GET" })
+        fetch(protectedUrl, {
+            headers: {
+                Authentication: "0394377664ac11a17fb5a2f247bfda7e78bbc762fa45f900c2b39cd783a070f8"
+            }
+        })
             .then(response => response.json())
             .then(json => {
                 txtTipo.value = json.tipo;
@@ -84,5 +90,4 @@
             })
             .catch(error => console.log(error));
     }
-
 </script>
